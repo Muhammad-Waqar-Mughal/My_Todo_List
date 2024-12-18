@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: {% if preferences.theme == 'dark' %}#333{% else %}#fff{% endif %};
+            color: {% if preferences.theme == 'dark' %}#fff{% else %}#000{% endif %};
+            font-family: {{ preferences.font or 'Arial' }};
+        }
+        .container {
+            background: rgba(241, 172, 250, 0.9);
+        }
+        h1, li, button {
+            color: {{ preferences.color or '#ffffff' }};
+            font-family: {{ preferences.font or 'Arial' }};
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: {{ preferences.color }}; font-family: {{ preferences.font }};">To-Do List</h1>
+        <form action="{{ url_for('add_task') }}" method="POST">
+            <input type="text" name="task" placeholder="Task" required><br>
+            <input type="number" name="priority" placeholder="Priority" required><br>
+            <input type="date" name="due_date" required><br>
+            <input type="text" name="category" placeholder="Category"><br>
+            <input type="date" name="reminder_date" placeholder="Reminder Date" required><br>
+            <input type="time" name="reminder_time" placeholder="Reminder Time" required><br>
+            <input type="email" name="email" placeholder="Email Address" required><br>
+            <button type="submit">Add Task</button>
+        </form>
+        <form action="/" method="get">
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by">
+                <option value="due_date">Due Date</option>
+                <option value="priority">Priority</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+        <ul>
+            {% for task in tasks %}
+            <li>
+                {{ task.task }} (Priority: {{ task.priority }}, Due: {{ task.due_date }}, Category: {{ task.category }}, Reminder: {{ task.reminder_date }} {{ task.reminder_time }}), Email: {{ task.email }})
+                <a href="{{ url_for('delete_task', task_id=task.id) }}">Delete</a>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('logout') }}">Logout</a>
+        <br>
+        <a href="{{ url_for('settings') }}">Settings</a> <!-- Link to settings page -->
+    </div>
+</body>
+</html>

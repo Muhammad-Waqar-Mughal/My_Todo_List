@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Settings</h1>
+        <form action="/settings" method="post">
+            <label for="theme">Choose Theme:</label>
+            <select name="theme" id="theme">
+                <option value="default" {% if preferences.theme == 'default' %}selected{% endif %}>Default</option>
+                <option value="dark" {% if preferences.theme == 'dark' %}selected{% endif %}>Dark</option>
+                <option value="light" {% if preferences.theme == 'light' %}selected{% endif %}>Light</option>
+            </select>
+            <label for="font">Choose Font:</label>
+            <select name="font" id="font">
+                <option value="Arial" {% if preferences.font == 'Arial' %}selected{% endif %}>Arial</option>
+                <option value="Courier New" {% if preferences.font == 'Courier New' %}selected{% endif %}>Courier New</option>
+                <option value="Georgia" {% if preferences.font == 'Georgia' %}selected{% endif %}>Georgia</option>
+                <option value="Verdana" {% if preferences.font == 'Verdana' %}selected{% endif %}>Verdana</option>
+            </select>
+            <label for="color">Choose Color:</label>
+            <input type="color" id="color" name="color" value="{{ preferences.color or '#333' }}">
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
